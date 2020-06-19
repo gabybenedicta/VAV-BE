@@ -49,5 +49,35 @@ pip install -r requirements.txt
 python manage.py runserver
 ```
 
+## Setting up your own local DB
+Go to settings.py and change the 'DATABASE' settings with this format:
+```
+DATABASES = {
+    'default': {
+        'NAME': 'xxx',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'xxx',
+        'PASSWORD': 'xxx',
+        'HOST': 'xxx',
+        'PORT': 'xxx',  
+        'OPTIONS': {
+          'autocommit': True,
+        },
+    }
+}
+```
+
+
+## Making Migrations
+Run the make migration command after making changes to the model (since we only have one app called mockplatform):
+```
+	python manage.py makemigrations mockplatform
+```
+Run the latest migrations by running this command in your terminal:
+```
+	python manage.py migrate
+```
+You should see the migrated model in your database
+
 ## Check if your server is running properly
 Go to `/store`, you will see "Hello, world. Welcome to the Mock Platform"
