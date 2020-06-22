@@ -27,5 +27,5 @@ def get_invoice(request, pk):
 		return Response(status=status.HTTP_404_NOT_FOUND)
 	if request.method == 'GET':
 		serializer = InvoiceSerializer(invoice)
-		return Response(serializer.data, status = status.HTTP_201_CREATED)
+		return Response(serializer.data, status = status.HTTP_200_OK)
 	return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
