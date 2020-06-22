@@ -29,3 +29,9 @@ class Products(models.Model):
     date = models.DateField()
     name = models.CharField(max_length=100)
     description = models.TextField()
+
+class Invoice(models.Model):
+    seller_id = models.IntegerField()
+    buyer_id = models.IntegerField()
+    amount = models.FloatField()
+    description = models.CharField(max_length=150, default=None)

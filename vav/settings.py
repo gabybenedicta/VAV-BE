@@ -76,7 +76,17 @@ WSGI_APPLICATION = 'vav.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    
+    'default': {
+        'NAME': os.environ.get("DB_NAME", ''),
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'root',
+        'PASSWORD': os.environ.get("DB_PASSWORD", ''),
+        'HOST': '35.185.181.172',
+        'PORT': '3306',  
+        'OPTIONS': {
+          'autocommit': True,
+        },
+    }
 }
 
 
