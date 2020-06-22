@@ -49,22 +49,11 @@ pip install -r requirements.txt
 python manage.py runserver
 ```
 
-## Setting up your own local DB
-Go to settings.py and change the 'DATABASE' settings with this format:
+## Using your own local DB
+Before running `python manage.py runserver` please export your database name and database pasword to the environment variables as shown below
 ```
-DATABASES = {
-    'default': {
-        'NAME': 'xxx',
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': 'xxx',
-        'PASSWORD': 'xxx',
-        'HOST': 'xxx',
-        'PORT': 'xxx',  
-        'OPTIONS': {
-          'autocommit': True,
-        },
-    }
-}
+export DB_NAME="xxx"
+export DB_PASSWORD="xxx"
 ```
 
 
