@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'vav.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'VAV-gaby-local',
+        'NAME': os.environ.get("DB_NAME", ''),
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
-        'PASSWORD': 'visa2020',
+        'PASSWORD': os.environ.get("DB_PASSWORD", ''),
         'HOST': '35.185.181.172',
         'PORT': '3306',  
         'OPTIONS': {
