@@ -76,7 +76,17 @@ WSGI_APPLICATION = 'vav.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    
+    'default': {
+        'NAME': 'VAV-gaby-local',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'root',
+        'PASSWORD': 'visa2020',
+        'HOST': '35.185.181.172',
+        'PORT': '3306',  
+        'OPTIONS': {
+          'autocommit': True,
+        },
+    }
 }
 
 
