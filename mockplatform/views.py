@@ -1,3 +1,4 @@
+import firebase_admin
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
@@ -5,6 +6,9 @@ from rest_framework.decorators import api_view
 
 from .serializers import ProductsSerializer, InvoiceSerializer
 from .models import Invoice
+
+# Initialize Firebase SDK
+default_app = firebase_admin.initialize_app()
 
 # Create your views here.
 def index(request):

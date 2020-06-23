@@ -56,6 +56,12 @@ export DB_NAME="xxx"
 export DB_PASSWORD="xxx"
 ```
 
+## Connecting to firebase
+Generate your private key in firebase and export your credentials
+```
+  export GOOGLE_APPLICATION_CREDENTIALS="/path/to/credentials"
+```
+
 
 ## Making Migrations
 Run the make migration command after making changes to the model (since we only have one app called mockplatform):
