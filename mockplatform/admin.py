@@ -1,8 +1,7 @@
 from django.contrib import admin
-from .models import PlatformUser
-from .models import Invoice
+from .models import CardHolderDetails, Invoice
 
 # Register your models here.
 
-admin.site.register(PlatformUser)
+admin.site.register(CardHolderDetails)
 admin.site.register(Invoice)

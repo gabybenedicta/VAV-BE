@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Invoice
+from .models import Invoice, CardHolderDetails
 
 class InvoiceSerializer(serializers.Serializer):
 	seller_id = serializers.IntegerField()
@@ -19,3 +19,10 @@ class InvoiceSerializer(serializers.Serializer):
 			instance.amount = validated_data.get('amount', instance.amount)
 			instance.transaction_status = validated_data.get('transaction_status', instance.transaction_status)
 			return instance
+
+class CardSerializer(serializers.Serializer):
+	uid = serializers.CharField(max_length=100)
+	public_key = serializers.CharField(max_length=100)
+
+	def create(self, validated_data):
+		return CardHolderDetails.objects.create(**validated_data)

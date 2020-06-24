@@ -19,5 +19,3 @@ class VerifyTokenMiddleware(object):
 		else:
 			message = {'message':"Unauthorised User"}
 			return JsonResponse(message, status=status.HTTP_401_UNAUTHORIZED)
-		# return self.get_response(request)
-		
