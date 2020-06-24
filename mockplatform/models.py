@@ -23,15 +23,21 @@ class PlatformUser(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
-
-class Products(models.Model):
-    user = models.ForeignKey(PlatformUser, related_name='products', on_delete=models.CASCADE)
-    date = models.DateField()
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-
 class Invoice(models.Model):
+    STATUS_CHOICES =( 
+    ("C", "CREATED"), 
+    ("I", "IN PROCESS"), 
+    ("S", "SUCCESS"), 
+    ("F", "FAILED"),
+    ) 
+  
     seller_id = models.IntegerField()
     buyer_id = models.IntegerField()
     amount = models.FloatField()
     description = models.CharField(max_length=150, default=None)
+    transaction_status = models.CharField(
+        choices= STATUS_CHOICES,
+        default= "C",
+        max_length = 1
+    )
+   
