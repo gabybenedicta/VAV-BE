@@ -18,6 +18,18 @@ def index(request):
 @api_view(['POST'])
 def create_invoice(request):
 	if request.method == 'POST':
+		try:
+			seller = CardHolderDetails.objects.get(uid = request.data["seller_id"])
+		except CardHolderDetails.DoesNotExist:
+			message={"content": "Seller does not exist"}
+			return Response(message, status=status.HTTP_404_NOT_FOUND)
+		
+		try: 
+			buyer = CardHolderDetails.objects.get(uid = request.data["buyer_id"])
+		except CardHolderDetails.DoesNotExist:
+			message={"content": "Buyer does not exist"}
+			return Response(message, status=status.HTTP_404_NOT_FOUND)
+
 		serializer = InvoiceSerializer(data=request.data)
 		if serializer.is_valid():
 			serializer.save()

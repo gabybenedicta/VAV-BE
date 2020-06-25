@@ -14,20 +14,7 @@ class InvoiceSerializer(serializers.Serializer):
 	transaction_id = serializers.CharField(max_length=150, default="")
 
 	def create(self, validated_data):
-		print("CREATING...")
 		return Invoice.objects.create(**validated_data)
-	def update(self, instance, validated_data):
-			print("UPDATING...")
-			# instance.seller_id = validated_data.get('seller_id', instance.seller_id)
-			# instance.buyer_id = validated_data.get('buyer_id', instance.buyer_id)
-			# instance.amount = validated_data.get('amount', instance.amount)
-			# instance.transaction_status = validated_data.get('transaction_status', instance.transaction_status)
-			# instance.currency = validated_data.get('currency', instance.currency)
-			# instance.transaction_id = validated_data.get('transaction_id', instance.transaction_id)
-			# instance.save()
-			updated = Invoice.objects.get(id = validated_data["id"]).update(**validated_data)
-			updated.save()
-			return updated
 
 class CardSerializer(serializers.Serializer):
 	uid = serializers.CharField(max_length=100)
