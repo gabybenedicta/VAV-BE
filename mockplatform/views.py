@@ -49,7 +49,7 @@ def make_payment(request, pk):
 		serializer = InvoiceSerializer(invoice, data=new_invoice)
 
 		#make payment call to THS and update status according to THS
-		
+
 def save_card(request):
 	content =request.data
 	email = content['email']
@@ -74,7 +74,7 @@ def save_card(request):
 			"uid": uid,
 			"public_key": json_data['public_key']
 		}
-		print(cardholder_data)	
+
 		serializer = CardSerializer(data=cardholder_data)
 		if serializer.is_valid():
 			serializer.save()
@@ -87,7 +87,8 @@ def view_card(request, uid):
 	try:
 		card = CardHolderDetails.objects.get(uid=uid)
 	except CardHolderDetails.DoesNotExist:
-		return Response(status=status.HTTP_404_NOT_FOUND)
+		message = {"content": "Card does not exist in the database"}
+		return Response(message, status=status.HTTP_404_NOT_FOUND)
 	if request.method == 'GET':
 		public_key = card.public_key
 		response = requests.get("https://e-context-279708.df.r.appspot.com/card/"+public_key)
@@ -104,7 +105,7 @@ def del_card(request, uid):
 	except CardHolderDetails.DoesNotExist:
 		message = {"content": "Card does not exist in the database"}
 		return Response(message, status=status.HTTP_404_NOT_FOUND)	
-
+		
 	response = requests.delete("https://e-context-279708.df.r.appspot.com/card/"+public_key)
 	message = {"content": "Deleted Successfully"}
 	return Response(message, status = status.HTTP_200_OK)
