@@ -15,8 +15,8 @@ class Invoice(models.Model):
     ("F", "FAILED"),
     ) 
   
-    seller_id = models.IntegerField()
-    buyer_id = models.IntegerField()
+    seller_id = models.CharField(max_length=100)
+    buyer_id = models.CharField(max_length=100)
     amount = models.FloatField()
     description = models.CharField(max_length=150, default=None)
     transaction_status = models.CharField(
@@ -24,4 +24,6 @@ class Invoice(models.Model):
         default= "C",
         max_length = 1
     )
+    currency= models.CharField(max_length=3, default= "SGD")
+    transaction_id = models.CharField(max_length=150, default="")
    

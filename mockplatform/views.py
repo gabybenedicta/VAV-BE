@@ -44,13 +44,44 @@ def make_payment(request, pk):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		
 		#change status to IN PROCESS
-		new_invoice = invoice
-		new_invoice.transaction_status = "I"
-		serializer = InvoiceSerializer(invoice, data=new_invoice)
-
+		invoice.transaction_status = "I"
+		invoice.save()
 		#make payment call to THS and update status according to THS
+		try: 
+			buyer = CardHolderDetails.objects.get(uid = invoice.buyer_id)
+		except CardHolderDetails.DoesNotExist:
+			message={"content": "Buyer does not exist"}
+			return Response(message, status=status.HTTP_404_NOT_FOUND)
+		try:
+			seller = CardHolderDetails.objects.get(uid = invoice.seller_id)
+		except CardHolderDetails.DoesNotExist:
+			message={"content": "Seller does not exist"}
+			return Response(message, status=status.HTTP_404_NOT_FOUND)
+		transactionObj = {
+			"sender_key": buyer.public_key,
+			"recipient_key": seller.public_key,
+			"amount": invoice.amount,
+			"currency": invoice.currency
+		}
 
+		response = requests.post("https://e-context-279708.df.r.appspot.com/transaction", data = transactionObj)
+		json_data = response.json()
+
+		if response.status_code == 200:
+			invoice.transaction_status = "S"
+			invoice.transaction_id = json_data['transactionIdentifier']
+			invoice.save()
+			
+			message = {"content": "Transaction successful!", "transaction_id": invoice.transaction_id }
+			return Response(message, status = status.HTTP_200_OK)
+		else:
+			invoice.transaction_status = "F"
+			invoice.save()
+			return Response(response.content, status = status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
 def save_card(request):
+	print(request)
 	content =request.data
 	email = content['email']
 	card_number = content['card_number']
@@ -78,7 +109,8 @@ def save_card(request):
 		serializer = CardSerializer(data=cardholder_data)
 		if serializer.is_valid():
 			serializer.save()
-		return Response(status = status.HTTP_201_CREATED)
+		message = { "content": "Card saved successfully"}
+		return Response(message, status = status.HTTP_201_CREATED)
 	return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
 
 
