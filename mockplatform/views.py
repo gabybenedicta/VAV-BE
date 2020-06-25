@@ -93,7 +93,6 @@ def make_payment(request, pk):
 
 @api_view(['POST'])
 def save_card(request):
-	print(request)
 	content =request.data
 	email = content['email']
 	card_number = content['card_number']
@@ -109,6 +108,17 @@ def save_card(request):
     "expiry_date": expiry_date,
     "ccv": ccv
 	}
+
+	user = "EMPTY"
+	try:
+		user = CardHolderDetails.objects.get(uid=uid)
+	except:
+		# User does not exists
+		pass
+
+	if user != "EMPTY":
+		message ={"content": "User already has a card registered. Please try another user"}
+		return Response(message, status= status.HTTP_400_BAD_REQUEST)
 
 	response = requests.post("https://e-context-279708.df.r.appspot.com/card", data=cardObj)
 	if response.status_code == 201:
