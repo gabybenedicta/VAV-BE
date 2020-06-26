@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
+import yaml
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -75,21 +75,34 @@ WSGI_APPLICATION = 'vav.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+with open(BASE_DIR + "/app.yaml") as file:
+    documents = yaml.full_load(file)
+    host = documents['env_variables']['HOST']
+    user = documents['env_variables']['USER']
+    password = documents['env_variables']['PASSWORD']
+    dbname = documents['env_variables']['NAME']
+
 DATABASES = {
     'default': {
-        'NAME': os.environ.get("DB_NAME", ''),
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': os.environ.get("DB_PASSWORD", ''),
-        'HOST': '35.185.181.172',
-        'PORT': '3306',  
-        'OPTIONS': {
-          'autocommit': True,
-        },
+        'HOST': host,
+        'NAME': dbname,
+        'USER': user,
+        'PASSWORD': password,
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
+CACHE_TTL = 60 * 15
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
