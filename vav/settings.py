@@ -22,10 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '5e+&17!z)fie4xya#skf!wd54r=v(a+c^hy8ol84r)xru*j-q-'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,6 +78,7 @@ with open(BASE_DIR + "/app.yaml") as file:
     user = documents['env_variables']['USER']
     password = documents['env_variables']['PASSWORD']
     dbname = documents['env_variables']['NAME']
+    debug = documents['env_variables']['DEBUG']
 
 DATABASES = {
     'default': {
@@ -91,6 +89,8 @@ DATABASES = {
         'PASSWORD': password,
     }
 }
+
+DEBUG = debug
 
 CACHES = {
     'default': {
