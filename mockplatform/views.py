@@ -22,26 +22,26 @@ def index(request):
 
 @api_view(['POST'])
 def create_invoice(request):
-    if request.method == 'POST':
-        try:
-            seller = CardHolderDetails.objects.get(
-                uid=request.data["seller_id"])
-        except CardHolderDetails.DoesNotExist:
-            message = {"content": "Seller does not exist"}
-            return Response(message, status=status.HTTP_404_NOT_FOUND)
+	if request.method == 'POST':
+		try:
+			seller = CardHolderDetails.objects.get(uid = request.data["seller_id"])
+		except CardHolderDetails.DoesNotExist:
+			message={"content": "Seller does not exist"}
+			return Response(message, status=status.HTTP_404_NOT_FOUND)
+		
+		try: 
+			buyer = CardHolderDetails.objects.get(uid = request.data["buyer_id"])
+		except CardHolderDetails.DoesNotExist:
+			message={"content": "Buyer does not exist"}
+			return Response(message, status=status.HTTP_404_NOT_FOUND)
 
-        try:
-            buyer = CardHolderDetails.objects.get(uid=request.data["buyer_id"])
-        except CardHolderDetails.DoesNotExist:
-            message = {"content": "Buyer does not exist"}
-            return Response(message, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = InvoiceSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+		serializer = InvoiceSerializer(data=request.data)
+		if serializer.is_valid():
+			created = serializer.save()
+			returned = serializer.data
+			returned['invoice_id'] = created.pk
+			return Response(returned, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def get_invoice(request, pk):
